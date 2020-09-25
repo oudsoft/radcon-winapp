@@ -41,16 +41,17 @@ function startExpress() {
 	var webServerDirectory = path.join(__dirname, 'http', 'bin', 'www');
 	log.info('starting node script: ' + webServerDirectory);
 
-	var nodePath = "/usr/local/bin/node";
+	var nodePath = "C:/Program Files (x86)/nodejs/node.exe";
 	if (process.platform === 'win32') {
 		// Overwrite with the windows path...only testing on mac currently
+		nodePath = "C:/Program Files (x86)/nodejs/node.exe";
 	}
 
 	// Optionally update environment variables used
 	var env = JSON.parse(JSON.stringify(process.env));
 
 	// Start the node express server
-	const spawn = require('child_process').spawn;
+  const { spawn } = require('child_process');
 	webServer = spawn(nodePath,[webServerDirectory], {
 		env : env
 	});
@@ -109,7 +110,7 @@ function createWindow () {
 
 	// Create the URL to the locally running express server
 	mainWindow.loadURL(url.format({
-		pathname: 'localhost:3000',
+		pathname: 'localhost:3000/webapp',
 		protocol: 'http:',
 		slashes: true
 	}));
@@ -122,97 +123,7 @@ function createWindow () {
 		mainWindow = null
 	});
 
-	const template = [
-		{
-			label: 'View',
-			submenu: [
-				{
-					role: 'reload'
-				},
-				{
-					role: 'forcereload'
-				},
-				{
-					role: 'toggledevtools'
-				},
-				{
-					type: 'separator'
-				},
-				{
-					role: 'resetzoom'
-				},
-				{
-					role: 'zoomin'
-				},
-				{
-					role: 'zoomout'
-				},
-				{
-					type: 'separator'
-				},
-				{
-					role: 'togglefullscreen'
-				}
-			]
-		},
-		{
-			role: 'window',
-			submenu: [
-				{
-					role: 'minimize'
-				},
-				{
-					role: 'close'
-				}
-			]
-		},
-		{
-			role: 'help',
-			submenu: [
-				{
-					label: 'Open Log File',
-					click: function() {
-						electron.shell.openItem(os.homedir() + '/Library/Logs/electron-express/log.log');
-					}
-				}
-			]
-		}
-	];
-
-	template.unshift({
-		label: productName,
-		submenu: [
-			{
-				role: 'about'
-			},
-			{
-				type: 'separator'
-			},
-			{
-				role: 'services',
-				submenu: []
-			},
-			{
-				type: 'separator'
-			},
-			{
-				role: 'hide'
-			},
-			{
-				role: 'hideothers'
-			},
-			{
-				role: 'unhide'
-			},
-			{
-				type: 'separator'
-			},
-			{
-				role: 'quit'
-			}
-		]
-	});
-
+	const template = require('./appmenu.js') (productName, mainWindow);
 	const Menu = electron.Menu;
 	const menu = Menu.buildFromTemplate(template);
 	Menu.setApplicationMenu(menu);
@@ -248,16 +159,18 @@ app.on('window-all-closed', function () {
 	}
 });
 
-//if (process.platform === "win32") {
-//	var rl = require("linebyline").createInterface({
-//		input: process.stdin,
-//		output: process.stdout
-//	});
-//
-//	rl.on("SIGINT", function () {
-//		process.emit("SIGINT");
-//	});
-//}
+/*
+if (process.platform === "win32") {
+	var rl = require("linebyline").createInterface({
+		input: process.stdin,
+		output: process.stdout
+	});
+
+	rl.on("SIGINT", function () {
+		process.emit("SIGINT");
+	});
+}
+*/
 
 process.on("SIGINT", function () {
 	//graceful shutdown

@@ -13,10 +13,11 @@ log.transports.file.level = 'info';
 var express = require('express');
 var router = express.Router();
 
+const productName = require('../../package.json').productName;
 /* GET home page. */
 router.get('/', function(req, res, next) {
     log.info('serving home page...');
-    res.render('index', { title: 'Express' });
+    res.render('index', { title: productName });
 });
 
 module.exports = router;

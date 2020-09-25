@@ -1,6 +1,10 @@
+@font-face { font-family: THSarabunNew; src: url("../font/THSarabunNew.ttf");}
+@font-face { font-family: THSarabunNewBold; src: url("../font/THSarabunNew Bold.ttf");}
+
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	font-family:	"THSarabunNew";
+	font-size: 24px;
 }
 
 a {

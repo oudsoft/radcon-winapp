@@ -42,4 +42,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+var log;
+
+module.exports = (httpserver, monitor) => {
+	log = monitor;
+	const webSocketServer = require('./websocket.js')(httpserver, monitor)
+	return app;
+}

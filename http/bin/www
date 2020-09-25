@@ -14,8 +14,9 @@ log.info('inside child express process...');
 /**
  * Module dependencies.
  */
+const express = require('express');
+const app = express();
 
-var app = require(__dirname + '/../app');
 var debug = require('debug')('config:server');
 var http = require('http');
 
@@ -33,6 +34,10 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+var webapp = require(__dirname + '/../app')(server, log);
+
+app.use('/webapp', webapp);
 
 /**
  * Listen on provided port, on all network interfaces.
